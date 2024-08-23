@@ -23,7 +23,7 @@ class FileDownloader:
             await self.download_single_file(url, local_filename, session)
             print(f"Downloaded: {local_filename}")
             if local_filename.endswith('.tar.bz2'):
-                self.extract_tar_bz2(local_filename)
+                await self.extract_tar_bz2(local_filename)
 
     @staticmethod
     async def download_single_file(url, local_filename, session):
@@ -43,8 +43,14 @@ class FileDownloader:
         return os.path.isfile(filename)
 
     @staticmethod
-    def extract_tar_bz2(filename):
+    async def extract_tar_bz2(filename):
         print(f"Extracting: {filename}")
-        with tarfile.open(filename, 'r:bz2') as tar:
-            tar.extractall()  # Extract to the current directory
+        # Run the synchronous extraction in a separate thread
+        await asyncio.to_thread(FileDownloader._extract_tar_bz2_sync, filename)
         print(f"Extracted: {filename}")
+
+    @staticmethod
+    def _extract_tar_bz2_sync(filename):
+        # Synchronous extraction, but called in a non-blocking way
+        with tarfile.open(filename, 'r:bz2') as tar:
+            tar.extractall()
