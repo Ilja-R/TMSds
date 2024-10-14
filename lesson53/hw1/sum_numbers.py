@@ -1,19 +1,20 @@
 import sys
 
 
-def print_hint():
-    print(
-        """Please provide exactly two numbers as arguments when running script
-Numbers must be valid, e.g. 1, 2, 3.4, 5.6, etc
-Example:
-docker run --rm robalkin-python:53 sum_numbers.py 100 200
-"""
-    )
-
-
 def sum_numbers():
+    """
+    This script takes two numbers as arguments and prints the sum of them.
+    Those numbers must be valid, e.g. 1, 2, 3.4, 5.6, etc
+
+    Example:
+    sum_numbers.py 100 200
+
+    When running from docker container:
+    docker run --rm robalkin-python:53 sum_numbers.py 100 200
+    """
+    hint = sum_numbers.__doc__
     if len(sys.argv) != 3:
-        print_hint()
+        print(hint)
         return
 
     try:
@@ -22,7 +23,7 @@ def sum_numbers():
         result = num1 + num2
         print(f"The sum of {num1} and {num2} is {result}.")
     except ValueError:
-        print_hint()
+        print(hint)
 
 
 if __name__ == '__main__':
