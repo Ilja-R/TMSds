@@ -7,6 +7,7 @@ WORKDIR /app
 COPY . /app
 
 ENTRYPOINT ["python"]
+CMD ["greeting.py"]
 
 # Build the image
 # docker build -t robalkin-python:53 .
